@@ -2,11 +2,15 @@ package Notes;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.InputStream;
 import java.awt.Point;
 import java.util.HashMap;
 import java.awt.event.MouseAdapter;
@@ -21,6 +25,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import Home.HomeScreen;
 import Utility.EditOverlay;
 
 public class MindMap extends MouseAdapter implements Runnable{
@@ -36,7 +41,7 @@ public class MindMap extends MouseAdapter implements Runnable{
     private static HashMap<EditOverlay, JLabel> overlayMap;
     private static Point startPoint;
 
-    public MindMap(boolean normalStart) {
+    public MindMap(boolean normalStart) throws FontFormatException, IOException {
         if(!normalStart){
             return;
         }
@@ -78,7 +83,12 @@ public class MindMap extends MouseAdapter implements Runnable{
         thread.start();
     }
 
-    private static void initialize() {
+    private static void initialize() throws FontFormatException, IOException {
+        // create input stream for FontAwesome icons
+        InputStream is = HomeScreen.class.getResourceAsStream("/FontAwesome/fontawesome-webfont.ttf");
+        Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+        font = font.deriveFont(Font.PLAIN, 24f);
+
         cloudB = new JButton("\uf0c2");
         circleB = new JButton("\uf111");
         squareB = new JButton("\uf0c8");
@@ -208,7 +218,7 @@ public class MindMap extends MouseAdapter implements Runnable{
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FontFormatException, IOException {
         new MindMap(true);
     }
 

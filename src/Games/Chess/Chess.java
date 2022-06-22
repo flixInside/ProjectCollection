@@ -41,7 +41,7 @@ public class Chess implements MouseListener {
 
         // Various settings
         frame.add(panel);
-        frame.setMinimumSize(new Dimension(800, 800));
+        frame.setMinimumSize(new Dimension(800, 1200));
         frame.pack();
         frame.setFocusable(true);
         frame.setLocationRelativeTo(null);
