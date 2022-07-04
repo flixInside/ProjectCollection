@@ -5,41 +5,47 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ChatServer{
-    
-    
+public class ChatServer implements Runnable {
 
-    public ChatServer() throws IOException {
-        try {
-            ServerSocket ss = new ServerSocket(4999);
-            Socket s = ss.accept();
-            System.out.println("Connected");
+    String message;
 
-            DataInputStream in = new DataInputStream(s.getInputStream());
-            DataOutputStream out = new DataOutputStream(s.getOutputStream());
+    public ChatServer() {
+        Thread thread = new Thread(this);
+        thread.start();
+    }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    @Override
+    public void run() {
+        try (ServerSocket ss = new ServerSocket(4999)) {
+            while (true) {
+                Socket s = ss.accept();
 
-            String msin = "";
-            String msout = "";
+                System.out.println("Connected");
 
-            while(!msin.equals("end")){
-                msin = in.readUTF();
-                System.out.println(msin);
-                msout = br.readLine();
-                out.writeUTF(msout);
-                out.flush();
+                BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+                message = br.readLine();
+                sendToAll(message, s);
+
+                //s.close();
             }
-            s.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
-    public static void main(String[] args) throws IOException {
+    private static void sendToAll(String message, Socket s) throws IOException {
+        PrintWriter pw = new PrintWriter(s.getOutputStream());
+        pw.println(message);
+        pw.flush();
+    }
+
+    public static void main(String[] args) {
         new ChatServer();
     }
 
