@@ -42,18 +42,15 @@ public class User {
     public void setUsername(String pUsername){
         if(validUsername(pUsername)){
             username = pUsername;
-            UserManegment.updateList();
         }
     }
 
     public void setEmail(String pEmail){
         email = pEmail;
-        UserManegment.updateList();
     }
 
     public void setPassword(String pPassword){
         password = pPassword;
-        UserManegment.updateList();
     }
 
     public static boolean validUsername(String pUsername){

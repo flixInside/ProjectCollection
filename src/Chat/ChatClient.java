@@ -1,8 +1,6 @@
 package Chat;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,14 +10,13 @@ import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-//import Account.Administration;
-//import Account.User;
+import Account.Administration;
+import Account.User;
 import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -36,16 +33,16 @@ public class ChatClient implements Runnable {
     private static JButton sendB;
     private static GridBagLayout gbl;
     private static GridBagConstraints gbc;
-    // private static User user;
+    private static User currentUser;
 
-    public ChatClient(/* User user */) throws UnknownHostException, IOException {
+    public ChatClient(User user) throws UnknownHostException, IOException {
         // Initialize objects
         frame = new JFrame("Home Screen");
         panel = new JPanel();
         gbl = new GridBagLayout();
         gbc = new GridBagConstraints();
 
-        // ChatClient.user = user;
+        currentUser = user;
 
         // Various settings
         frame.add(panel);
@@ -59,10 +56,13 @@ public class ChatClient implements Runnable {
 
         initialize();
 
+        s = new Socket("localhost", 4999);
+        PrintWriter pw = new PrintWriter(s.getOutputStream());
+        pw.println(currentUser.getUsername() + " has joined the chat.");
+        pw.flush();
+
         Thread thread = new Thread(this);
         thread.start();
-
-        s = new Socket("localhost", 4999);
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -114,21 +114,22 @@ public class ChatClient implements Runnable {
     @Override
     public void run() {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()))) {
-            String message = "";
+            String message = "x";
             try {
                 message = br.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            chatA.setText(chatA.getText() + message);
+            System.out.println(message);
         } catch (IOException e) {
-            
+
         }
     }
 
     public static void main(String[] args) throws Exception {
-        // new Administration(false);
-        new ChatClient(/* Administration.users.get(0) */);
+        new Administration(false);
+        System.out.println(Administration.users.get(0).getEmail());
+        System.out.println(Administration.users.get(1).getEmail());
     }
 
 }

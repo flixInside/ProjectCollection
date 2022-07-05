@@ -13,7 +13,8 @@ public class UserManegment {
 
     public static Connection getConnection() throws Exception {
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/usermanagement", "felix", "PASSWORD");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/usermanagement", "felix",
+                    "PASSWORD");
             return con;
         } catch (Exception e) {
             System.out.println(e);
@@ -37,7 +38,7 @@ public class UserManegment {
 
     public static ArrayList<String> requestData(String what) {
         if (what.equals("*")) {
-            requestData();
+            readData();
             return null;
         }
         try {
@@ -55,7 +56,7 @@ public class UserManegment {
         }
     }
 
-    private static ArrayList<ArrayList<String>> requestData() {
+    private static ArrayList<ArrayList<String>> readData() {
         try {
             Connection con = getConnection();
             PreparedStatement selection = con.prepareStatement("SELECT * FROM usertable");
@@ -76,7 +77,7 @@ public class UserManegment {
         }
     }
 
-    public static String requestData(String what, int userID) {
+    public static String readData(String what, int userID) {
         try {
             Connection con = getConnection();
             PreparedStatement selection = con
@@ -92,11 +93,29 @@ public class UserManegment {
         }
     }
 
-    public static void writeData(int userID, String what, String intoWhat){
+    public static void writeData(int userID, String what, String intoWhat) {
         intoWhat = "'" + intoWhat + "'";
         try {
             Connection con = getConnection();
-            PreparedStatement isertion = con.prepareStatement("UPDATE usertable set " + what + " = " + intoWhat + " WHERE ID = " + userID);
+            PreparedStatement isertion = con
+                    .prepareStatement("UPDATE usertable set " + what + " = " + intoWhat + " WHERE ID = " + userID);
+            isertion.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void writeData(int userID, String username, String email, String password) {
+        try {
+            Connection con = getConnection();
+            PreparedStatement isertion = con
+                    .prepareStatement("UPDATE usertable set username = '" + username + "' WHERE ID = " + userID);
+            isertion.executeUpdate();
+
+            isertion = con.prepareStatement("UPDATE usertable set username = '" + email + "' WHERE ID = " + userID);
+            isertion.executeUpdate();
+
+            isertion = con.prepareStatement("UPDATE usertable set username = '" + password + "' WHERE ID = " + userID);
             isertion.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -104,41 +123,51 @@ public class UserManegment {
     }
 
     public static void updateList() {
-        ArrayList<ArrayList<String>> list = requestData();
+        ArrayList<ArrayList<String>> list = readData();
 
-        if (Administration.users.size() >= list.size()) {
-            ArrayList<User> removeList = new ArrayList<>();
-            for (int i = list.size(); i < Administration.users.size(); i++) {
-                removeList.add(Administration.users.get(i));
-            }
-            Administration.users.removeAll(removeList);
-        }
-
-        for (int i = 0; i < Administration.users.size(); i++) {
-            if (!String.valueOf(Administration.users.get(i).getID()).equals(list.get(i).get(0))) {
-            }
-            if (!Administration.users.get(i).getUsername().equals(list.get(i).get(1))) {
-                writeData(Administration.users.get(i).getID(), "username", Administration.users.get(i).getUsername());
-            }
-            if (!Administration.users.get(i).getEmail().equals(list.get(i).get(2))) {
-                writeData(Administration.users.get(i).getID(), "email", Administration.users.get(i).getEmail());
-            }
-            if (!Administration.users.get(i).getPassword().equals(list.get(i).get(3))) {
-                writeData(Administration.users.get(i).getID(), "password", Administration.users.get(i).getPassword());
-            }
-
-        }
+        System.out.println(list.get(0).get(1));
 
         if (list.size() > Administration.users.size()) {
-            for(ArrayList<String> s : list){
-                Administration.users.add(new User(s.get(1), s.get(2), s.get(3)));
+            for (int i = Administration.users.size(); i < list.size(); i++) {
+                System.out.println(list.get(i).get(1));
+                System.out.println(i);
+                Administration.users.add(new User(list.get(i).get(1), list.get(i).get(2), list.get(i).get(3)));
             }
         }
+
+        System.out.println(list.get(0).get(1));
+        System.out.println(Administration.users.get(0).getUsername());
+        System.out.println(Administration.userListToString());
+
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println("for");
+            User user = Administration.users.get(i);
+            if (!list.get(i).get(0).equals(String.valueOf(Administration.users.get(i).getID()))) {
+
+            }
+            if (!list.get(i).get(1).equals(Administration.users.get(i).getUsername())) {
+                System.out.println("username");
+                Administration.getUserWithID(user.getID()).setUsername(list.get(i).get(1));
+            }
+            if (!list.get(i).get(2).equals(Administration.users.get(i).getEmail())) {
+                System.out.println("email");
+                Administration.getUserWithID(user.getID()).setEmail(list.get(i).get(2));
+            }
+            if (!list.get(i).get(3).equals(Administration.users.get(i).getPassword())) {
+                System.out.println("password");
+                Administration.getUserWithID(user.getID()).setPassword(list.get(i).get(3));
+            }
+
+        }
+
+        System.out.println("done");
 
     }
 
-    public static void main(String[] args){
-        
+    public static void main(String[] args) throws Exception {
+        new Administration(false);
+        // System.out.println(Administration.users.size());
+        System.out.println(Administration.userListToString());
     }
 
 }

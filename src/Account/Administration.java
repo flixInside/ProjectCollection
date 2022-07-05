@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import com.mysql.cj.x.protobuf.MysqlxExpr.Identifier;
+
 import GUIs.ErrorNote;
 
 public class Administration {
@@ -312,9 +314,7 @@ public class Administration {
     }
 
     private static void editProfile(){
-        HomeScreen.getCurrentUser().setUsername(sUserNameF.getText());
-        HomeScreen.getCurrentUser().setEmail(sEmailF.getText());
-        HomeScreen.getCurrentUser().setPassword(passwordToString(sNewPasswordPF.getPassword()));
+        UserManegment.writeData(currentUser.getID(), sUserNameF.getText(), sEmailF.getText(), passwordToString(sNewPasswordPF.getPassword()));
         settings.setVisible(false);
     }
 
@@ -333,12 +333,29 @@ public class Administration {
         
     }
 
+    public static User getUserWithID(int ID) {
+        for(User u : users){
+            if(u.getID() == ID){
+                return u;
+            }
+        }
+        return null;
+    }
+
     public static String passwordToString(char[] password){
         String output = "";
         for(char c : password){
             output += c;
         }
         return output;
+    }
+
+    public static String userListToString() {
+        String out = "";
+        for(User u : users){
+            out += "[" + u.getID() + ", " + u.getUsername() + ", " + u.getEmail() + ", " + u.getPassword() + "]" + "\n";
+        }
+        return out;
     }
 
     public static void main(String[] args) throws Exception {
