@@ -16,11 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import GUIs.ErrorNote;
+
 public class QuickCalculator implements KeyListener {
     // TODO: cosmetic changes
     // FIXME: zero after comma
-    // FIXME: keyinput operator don't work
-    // FIXME: long numbers create zeros at the end and add nummbers at the beggining, -> maybe double length
 
     // Declare objects
     public static JFrame frame;
@@ -67,7 +67,7 @@ public class QuickCalculator implements KeyListener {
 
     public static void initialize() {
         // Create button and output label
-        outL = new JLabel("Hello", SwingConstants.RIGHT);
+        outL = new JLabel("", SwingConstants.RIGHT);
         JButton resetB = new JButton("AC");
         JButton toogleMinusB = new JButton("-");
         JButton percentB = new JButton("%");
@@ -184,7 +184,7 @@ public class QuickCalculator implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyChar()) {
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_0: case KeyEvent.VK_NUMPAD0: 
                 zeroM();
                 break;
@@ -221,13 +221,13 @@ public class QuickCalculator implements KeyListener {
             case KeyEvent.VK_MINUS: case KeyEvent.VK_SUBTRACT:
                 subtractM();
                 break;
-            case KeyEvent.VK_NUMBER_SIGN + KeyEvent.VK_SHIFT: case KeyEvent.VK_MULTIPLY:
+            case KeyEvent.VK_MULTIPLY:
                 multiplyM();
                 break;
             case KeyEvent.VK_SLASH: case KeyEvent.VK_DIVIDE:
                 divideM();
                 break;
-            case KeyEvent.VK_COMMA:
+            case KeyEvent.VK_COMMA: case KeyEvent.VK_PERIOD:
                 commaM();
                 break;
             case KeyEvent.VK_DELETE:
@@ -245,7 +245,7 @@ public class QuickCalculator implements KeyListener {
     }
 
     /**
-     * calculate the result of the two numbers
+     * calculates the result of the two numbers
      */
     private static void equalsM() {
         switch (operation) {
@@ -260,6 +260,8 @@ public class QuickCalculator implements KeyListener {
                 break;
             case DIVIDE:
                 firstNumber /= secondNumber;
+                break;
+            default:
                 break;
         }
         outL.setText(toString(firstNumber));
@@ -517,6 +519,7 @@ public class QuickCalculator implements KeyListener {
             outL.setText(toString(firstNumber));
         } else if (spot == FIRST) {
             firstNumber = Double.valueOf(append(firstNumber, 0));
+            System.out.println(firstNumber);
             outL.setText(toString(firstNumber));
         } else if (spot == SECOND) {
             secondNumber = Double.valueOf(append(secondNumber, 0));
@@ -532,11 +535,9 @@ public class QuickCalculator implements KeyListener {
      * @return
      */
     private static String append(double pFirstNumber, int pSecondNumber) {
-        int i;
         String output = "";
         String firstNumber = String.valueOf(pFirstNumber);
-        for (i = 0; firstNumber.charAt(i) != '.'; i++)
-            ;
+        int i = firstNumber.indexOf('.');
         if (afterComma == false) {
             output = firstNumber.substring(0, i);
             output += pSecondNumber;
@@ -547,12 +548,12 @@ public class QuickCalculator implements KeyListener {
             } else {
                 output = firstNumber + String.valueOf(pSecondNumber);
             }
-
         }
-        //try catch
-        if(Double.valueOf(output) <= Double.MAX_VALUE){
+
+        if(Double.valueOf(output) <= 99999999){
             return output;
         }else{
+            new ErrorNote("Max length reached.");
             return String.valueOf(pFirstNumber);
         }
         
@@ -567,6 +568,7 @@ public class QuickCalculator implements KeyListener {
         DecimalFormat df = new DecimalFormat("#.######");
         df.setRoundingMode(RoundingMode.HALF_UP);
         String output = df.format(number);
+        System.out.println(output);
         return output.replace('.', ',');
     }
 
@@ -575,5 +577,9 @@ public class QuickCalculator implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {}
+
+    public static void main(String[] args) {
+        new QuickCalculator();
+    }
 
 }

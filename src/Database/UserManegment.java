@@ -125,19 +125,15 @@ public class UserManegment {
     public static void updateList() {
         ArrayList<ArrayList<String>> list = readData();
 
-        System.out.println(list.get(0).get(1));
-
         if (list.size() > Administration.users.size()) {
             for (int i = Administration.users.size(); i < list.size(); i++) {
                 System.out.println(list.get(i).get(1));
                 System.out.println(i);
                 Administration.users.add(new User(list.get(i).get(1), list.get(i).get(2), list.get(i).get(3)));
+                System.out.println(Administration.users.get(0).getUsername());
+                System.out.println(Administration.userListToString());
             }
         }
-
-        System.out.println(list.get(0).get(1));
-        System.out.println(Administration.users.get(0).getUsername());
-        System.out.println(Administration.userListToString());
 
         for (int i = 0; i < list.size(); i++) {
             System.out.println("for");
@@ -167,7 +163,7 @@ public class UserManegment {
     public static void main(String[] args) throws Exception {
         new Administration(false);
         // System.out.println(Administration.users.size());
-        System.out.println(Administration.userListToString());
+        //System.out.println(Administration.userListToString());
     }
 
 }
