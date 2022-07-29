@@ -17,6 +17,12 @@ public class FileExplorer implements ActionListener {
 
     private String text;
 
+    /**
+     * Constructor with the params to set the operation(save/open file) and the content to be saved in the file. 
+     * @param operation
+     * @param text
+     * @param e
+     */
     public FileExplorer(int operation, String text, ActionEvent e) {
         FileExplorer.operation = operation;
         this.text = text;
@@ -24,6 +30,9 @@ public class FileExplorer implements ActionListener {
         actionPerformed(e);
     }
 
+    /**
+     * Acctually creates the JFileChooser GUI.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser();
@@ -45,7 +54,7 @@ public class FileExplorer implements ActionListener {
 
         if (response == JFileChooser.APPROVE_OPTION) {
             try {
-                try (FileWriter fw = new FileWriter(fileChooser.getSelectedFile()+".txt")) {
+                try (FileWriter fw = new FileWriter(fileChooser.getSelectedFile() + ".txt")) {
                     fw.write(text);
                 }
             } catch (Exception ex) {

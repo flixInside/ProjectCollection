@@ -32,7 +32,7 @@ public class QuickCalculator implements KeyListener {
     public static double firstNumber = 0;
     public static double secondNumber = 0;
 
-    public static int operation, spot;
+    public static int operation, spot, spotAfterComma;
     public static boolean afterCalculation, afterComma;
     // placeholder for operations
     public static final int ADD = 0;
@@ -185,49 +185,63 @@ public class QuickCalculator implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_0: case KeyEvent.VK_NUMPAD0: 
+            case KeyEvent.VK_0:
+            case KeyEvent.VK_NUMPAD0:
                 zeroM();
                 break;
-            case KeyEvent.VK_1: case KeyEvent.VK_NUMPAD1:
+            case KeyEvent.VK_1:
+            case KeyEvent.VK_NUMPAD1:
                 oneM();
                 break;
-            case KeyEvent.VK_2: case KeyEvent.VK_NUMPAD2:
+            case KeyEvent.VK_2:
+            case KeyEvent.VK_NUMPAD2:
                 twoM();
                 break;
-            case KeyEvent.VK_3: case KeyEvent.VK_NUMPAD3:
+            case KeyEvent.VK_3:
+            case KeyEvent.VK_NUMPAD3:
                 threeM();
                 break;
-            case KeyEvent.VK_4: case KeyEvent.VK_NUMPAD4:
+            case KeyEvent.VK_4:
+            case KeyEvent.VK_NUMPAD4:
                 fourM();
                 break;
-            case KeyEvent.VK_5: case KeyEvent.VK_NUMPAD5:
+            case KeyEvent.VK_5:
+            case KeyEvent.VK_NUMPAD5:
                 fiveM();
                 break;
-            case KeyEvent.VK_6: case KeyEvent.VK_NUMPAD6:
+            case KeyEvent.VK_6:
+            case KeyEvent.VK_NUMPAD6:
                 sixM();
                 break;
-            case KeyEvent.VK_7: case KeyEvent.VK_NUMPAD7:
+            case KeyEvent.VK_7:
+            case KeyEvent.VK_NUMPAD7:
                 sevenM();
                 break;
-            case KeyEvent.VK_8: case KeyEvent.VK_NUMPAD8:
+            case KeyEvent.VK_8:
+            case KeyEvent.VK_NUMPAD8:
                 eigthM();
                 break;
-            case KeyEvent.VK_9: case KeyEvent.VK_NUMPAD9:
+            case KeyEvent.VK_9:
+            case KeyEvent.VK_NUMPAD9:
                 nineM();
                 break;
-            case KeyEvent.VK_PLUS: case KeyEvent.VK_ADD:
+            case KeyEvent.VK_PLUS:
+            case KeyEvent.VK_ADD:
                 addM();
                 break;
-            case KeyEvent.VK_MINUS: case KeyEvent.VK_SUBTRACT:
+            case KeyEvent.VK_MINUS:
+            case KeyEvent.VK_SUBTRACT:
                 subtractM();
                 break;
             case KeyEvent.VK_MULTIPLY:
                 multiplyM();
                 break;
-            case KeyEvent.VK_SLASH: case KeyEvent.VK_DIVIDE:
+            case KeyEvent.VK_SLASH:
+            case KeyEvent.VK_DIVIDE:
                 divideM();
                 break;
-            case KeyEvent.VK_COMMA: case KeyEvent.VK_PERIOD:
+            case KeyEvent.VK_COMMA:
+            case KeyEvent.VK_PERIOD:
                 commaM();
                 break;
             case KeyEvent.VK_DELETE:
@@ -360,6 +374,7 @@ public class QuickCalculator implements KeyListener {
             outL.setText(toString(firstNumber));
         } else if (spot == SECOND) {
             secondNumber = Double.valueOf(append(secondNumber, 9));
+            spot++;
             outL.setText(toString(secondNumber));
         }
 
@@ -378,6 +393,7 @@ public class QuickCalculator implements KeyListener {
             outL.setText(toString(firstNumber));
         } else if (spot == SECOND) {
             secondNumber = Double.valueOf(append(secondNumber, 8));
+            spot++;
             outL.setText(toString(secondNumber));
         }
 
@@ -396,6 +412,7 @@ public class QuickCalculator implements KeyListener {
             outL.setText(toString(firstNumber));
         } else if (spot == SECOND) {
             secondNumber = Double.valueOf(append(secondNumber, 7));
+            spot++;
             outL.setText(toString(secondNumber));
         }
 
@@ -414,6 +431,7 @@ public class QuickCalculator implements KeyListener {
             outL.setText(toString(firstNumber));
         } else if (spot == SECOND) {
             secondNumber = Double.valueOf(append(secondNumber, 6));
+            spot++;
             outL.setText(toString(secondNumber));
         }
 
@@ -432,6 +450,7 @@ public class QuickCalculator implements KeyListener {
             outL.setText(toString(firstNumber));
         } else if (spot == SECOND) {
             secondNumber = Double.valueOf(append(secondNumber, 5));
+            spot++;
             outL.setText(toString(secondNumber));
         }
 
@@ -450,6 +469,7 @@ public class QuickCalculator implements KeyListener {
             outL.setText(toString(firstNumber));
         } else if (spot == SECOND) {
             secondNumber = Double.valueOf(append(secondNumber, 4));
+            spot++;
             outL.setText(toString(secondNumber));
         }
 
@@ -468,6 +488,7 @@ public class QuickCalculator implements KeyListener {
             outL.setText(toString(firstNumber));
         } else if (spot == SECOND) {
             secondNumber = Double.valueOf(append(secondNumber, 3));
+            spot++;
             outL.setText(toString(secondNumber));
         }
 
@@ -486,6 +507,7 @@ public class QuickCalculator implements KeyListener {
             outL.setText(toString(firstNumber));
         } else if (spot == SECOND) {
             secondNumber = Double.valueOf(append(secondNumber, 2));
+            spot++;
             outL.setText(toString(secondNumber));
         }
 
@@ -504,6 +526,7 @@ public class QuickCalculator implements KeyListener {
             outL.setText(toString(firstNumber));
         } else if (spot == SECOND) {
             secondNumber = Double.valueOf(append(secondNumber, 1));
+            spot++;
             outL.setText(toString(secondNumber));
         }
 
@@ -523,6 +546,7 @@ public class QuickCalculator implements KeyListener {
             outL.setText(toString(firstNumber));
         } else if (spot == SECOND) {
             secondNumber = Double.valueOf(append(secondNumber, 0));
+            spot++;
             outL.setText(toString(secondNumber));
         }
 
@@ -530,6 +554,7 @@ public class QuickCalculator implements KeyListener {
 
     /**
      * appends the secondNumber to the firstNumber
+     * 
      * @param pFirstNumber
      * @param pSecondNumber
      * @return
@@ -550,33 +575,47 @@ public class QuickCalculator implements KeyListener {
             }
         }
 
-        if(Double.valueOf(output) <= 99999999){
+        if (Double.valueOf(output) <= 99999999) {
             return output;
-        }else{
+        } else {
             new ErrorNote("Max length reached.");
             return String.valueOf(pFirstNumber);
         }
-        
+
     }
 
     /**
      * returns a String of the double number
+     * 
      * @param number
      * @return
      */
     private static String toString(double number) {
-        DecimalFormat df = new DecimalFormat("#.######");
+        DecimalFormat df;
+        String output = String.valueOf(number);
+        if (!afterComma) {
+            df = new DecimalFormat("#.######");
+        } else {
+            String pattern = "#.";
+            for (int i = 0; i < spotAfterComma - 1; i++) {
+                pattern += "#";
+            }
+            pattern += "0";
+            df = new DecimalFormat(pattern);
+        }
         df.setRoundingMode(RoundingMode.HALF_UP);
-        String output = df.format(number);
+        output = df.format(number);
         System.out.println(output);
         return output.replace('.', ',');
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+    }
 
     public static void main(String[] args) {
         new QuickCalculator();

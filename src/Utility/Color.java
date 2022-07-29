@@ -42,14 +42,31 @@ public class Color extends java.awt.Color implements Runnable {
     public static final java.awt.Color orange = new java.awt.Color(255, 125, 0);
     public static final java.awt.Color pink = new java.awt.Color(255, 0, 255);
 
+    /**
+     * Constructor to create a new color using the java color class.
+     * @param color
+     */
     public Color(java.awt.Color color) {
         super(color.getRGB());
     }
 
+    /**
+     * Constructor to create a new color using an rgb code.
+     * @param r
+     * @param g
+     * @param b
+     */
     public Color(int r, int g, int b) {
         super(r, g, b);
     }
 
+    /**
+     * Constructor to create a new color using an rgb code with an additional alpha channel.
+     * @param r
+     * @param g
+     * @param b
+     * @param a
+     */
     public Color(int r, int g, int b, int a) {
         super(r, g, b, a);
     }
@@ -79,6 +96,10 @@ public class Color extends java.awt.Color implements Runnable {
         thread.start();
     }
 
+    /**
+     * Sets uo the GUI. Param to display either the select(true) or the copy(false) button.
+     * @param select
+     */
     public static void initialize(boolean select) {
         colorP = new JPanel();
         redS = new JSlider(SwingConstants.HORIZONTAL, 0, 255, 0);
@@ -154,23 +175,36 @@ public class Color extends java.awt.Color implements Runnable {
         frame.setVisible(true);
     }
 
+    /**
+     * Saves the current color for further use.
+     */
     private static void selectColor() {
         selectedColor = new Color(redS.getValue(), greenS.getValue(), blueS.getValue());
         selected = true;
     }
 
+    /**
+     * Copys the rgb code of the current color to the clipboard
+     */
     private static void copyToClipboard() {
         StringSelection color = new StringSelection(
                 String.valueOf(redS.getValue()) + ", " + String.valueOf(greenS.getValue()) + ", "
-                        + String.valueOf(blueS.getValue()) + ");");
+                        + String.valueOf(blueS.getValue()));
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(color, null);
     }
 
-    public static Color getSelectedColor(){
+    /**
+     * returns the color that was selected using the select button
+     * @return
+     */
+    public Color getSelectedColor() {
         return selectedColor;
     }
 
+    /**
+     * Thread method. Fills in the JLabel with the rgb code and colors the panel.
+     */
     @Override
     public void run() {
         while (true) {
@@ -181,8 +215,13 @@ public class Color extends java.awt.Color implements Runnable {
         }
     }
 
+    /**
+     * main method
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
-        new Color(true);
+        new Color(false);
     }
 
 }

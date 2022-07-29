@@ -19,6 +19,10 @@ public class ErrorNote {
     private static GridBagLayout gbl;
     public static GridBagConstraints gbc;
 
+    /**
+     * Sets up the GUI. The error message is passed with the param.
+     * @param errorNote
+     */
     public ErrorNote(String errorNote){
         frame = new JFrame("Error");
         panel = new JPanel();
