@@ -56,7 +56,7 @@ public class ColorPicker implements Runnable, KeyListener {
         colorP = new JPanel();
         rgbL = new JLabel("r: 0, g: 0, b: 0");
         hexL = new JLabel("#000000");
-        infoL = new JLabel("Press 'alt' + 'x' to lock the current color.");
+        infoL = new JLabel("Press 'alt' + 'x' to toogle the color picker.");
 
         colorP.setBackground(Color.black);
 
@@ -86,26 +86,31 @@ public class ColorPicker implements Runnable, KeyListener {
     }
 
     /**
-     * Thread method. Detects the color of the pixel below the mouse cursor using a robot (java class). 
+     * Thread method. Detects the color of the pixel below the mouse cursor using a
+     * robot (java class).
      * Fills in the JLabel with rgb/hex code.
      */
     @Override
     public void run() {
-        while (!stopped) {
-            Point p = MouseInfo.getPointerInfo().getLocation();
-            Color color = new Color(0, 0, 0);
-            try {
-                Robot robot = new Robot();
-                java.awt.Color c = robot.getPixelColor((int) p.getX(), (int) p.getY());
-                color = new Color(c);
-            } catch (AWTException e) {
+        while (true) {
+            System.out.println(); // is required !don't remove!
+            if (!stopped) {
+                Point p = MouseInfo.getPointerInfo().getLocation();
+                Color color = new Color(0, 0, 0);
+                try {
+                    Robot robot = new Robot();
+                    java.awt.Color c = robot.getPixelColor((int) p.getX(), (int) p.getY());
+                    color = new Color(c);
+                } catch (AWTException e) {
 
+                }
+                colorP.setBackground(color);
+                rgbL.setText("r: " + color.getRed() + ", g: " + color.getGreen() + ", b: " + color.getBlue());
+                hexL.setText("#" + Integer.toHexString(color.getRed()) + Integer.toHexString(color.getGreen())
+                        + Integer.toHexString(color.getBlue()));
             }
-            colorP.setBackground(color);
-            rgbL.setText("r: " + color.getRed() + ", g: " + color.getGreen() + ", b: " + color.getBlue());
-            hexL.setText("#" + Integer.toHexString(color.getRed()) + Integer.toHexString(color.getGreen())
-                    + Integer.toHexString(color.getBlue()));
         }
+
     }
 
     /**
@@ -124,7 +129,7 @@ public class ColorPicker implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_X) {
             if (e.isAltDown()) {
-                stopped = true;
+                stopped = !stopped;
             }
         }
     }

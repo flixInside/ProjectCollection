@@ -30,6 +30,7 @@ public class Color extends java.awt.Color implements Runnable {
     public static boolean selected;
 
     public static final java.awt.Color white = new java.awt.Color(255, 255, 255);
+    public static final java.awt.Color black = new java.awt.Color(0, 0, 0);
     public static final java.awt.Color red = new java.awt.Color(155, 0, 0);
     public static final java.awt.Color darkgreen = new java.awt.Color(0, 40, 0);
     public static final java.awt.Color green = new java.awt.Color(0, 100, 0);
